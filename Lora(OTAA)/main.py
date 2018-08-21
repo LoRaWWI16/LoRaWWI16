@@ -3,6 +3,13 @@ from network import LoRa
 import time
 import socket
 import binascii
+from ds3231 import DS3231
+from colour import Colour
+import pycom
+from machine import Timer, Pin, PWM
+
+
+ertc = DS3231(0, (Pin.module.P21, Pin.module.P20))
 
 # Colors
 off = 0x000000
@@ -25,9 +32,7 @@ pycom.rgbled(red)
 # wait until the module has joined the network
 while not lora.has_joined():
     pycom.rgbled(red)
-
      #pass no delays, just keeps looping until .has_joined() returns true
-
 print('Joined!!')
 pycom.rgbled(blue)
 time.sleep(0.5)
@@ -45,12 +50,7 @@ s.setblocking(True)
 # send some data
 s.send(bytes([0x01, 0x02, 0x03]))
 
-pycom.rgbled(green)
-time.sleep(0.2)
-pycom.rgbled(off)
-time.sleep(0.2)
-pycom.rgbled(green)
-pycom.rgbled(blue)
+Colour.blink_green()
 
 # make the socket non-blocking
 # (because if there's no data received it will block forever...)
@@ -72,25 +72,14 @@ s.send(y)
 s.send(byte_y)
 
 for i in range(5):
+    print(ertc.get_time(True))
     pkt = b'PKT #' + bytes([i])
     print('Sending:', pkt)
     s.send(pkt)
-    pycom.rgbled(green)
-    time.sleep(0.2)
-    pycom.rgbled(off)
-    time.sleep(0.2)
-    pycom.rgbled(green)
-    time.sleep(0.5)
-    pycom.rgbled(blue)
+    Colour.blink_green()
     time.sleep(4)
     rx, port = s.recvfrom(256)
     if rx:
         print("Received {}, on Port: {}".format(rx,port))
-        pycom.rgbled(yellow)
-        time.sleep(0.2)
-        pycom.rgbled(off)
-        time.sleep(0.2)
-        pycom.rgbled(yellow)
-        time.sleep(0.5)
-        pycom.rgbled(blue)
+        Colour.blink_yellow()
     time.sleep(6)
