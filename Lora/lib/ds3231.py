@@ -62,7 +62,7 @@ class DS3231:
             YY += 1900
         if set_rtc:
             rtc.init((YY, MM, DD, hh, mm, ss, 0))
-        return (YY, MM, DD, hh, mm, ss, 0, 0) # Time from DS3231 in time.time() format (less yday)
+        return (YY, MM, DD, hh, mm, ss) # Time from DS3231 in time.time() format (less yday)
 
     def save_time(self):
         (YY, MM, DD, hh, mm, ss, wday, yday) = utime.gmtime()
