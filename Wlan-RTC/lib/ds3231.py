@@ -67,7 +67,12 @@ class DS3231:
     def save_time(self):
         (YY, MM, DD, hh, mm, ss, wday, yday) = utime.gmtime()
         wday += 1 # needs to be 1 == Monday, 7 == Sunday
-        
+        ######################
+        #  Change RTC Hours
+        # To do that change the value of hh with your current hours
+        #######################
+        #Example:
+        #hh = 8
         self.ds3231.writeto_mem(DS3231_I2C_ADDR, 0, dec2bcd(ss))
         self.ds3231.writeto_mem(DS3231_I2C_ADDR, 1, dec2bcd(mm))
         self.ds3231.writeto_mem(DS3231_I2C_ADDR, 2, dec2bcd(hh))      # Sets to 24hr mode

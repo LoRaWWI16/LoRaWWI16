@@ -8,6 +8,8 @@ blue = 0x00007f
 green = 0x007f00
 yellow = 0x7f7f00
 
+# Change or let the LED blink
+
 class Colour:
     def off():
         return off

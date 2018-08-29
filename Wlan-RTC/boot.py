@@ -2,6 +2,9 @@ import machine
 from network import WLAN
 
 from network import WLAN
+
+# wlan starten mit ssid = 'Wlan Name' und auth=(net.sec, 'Passwort')
+
 # wlan = WLAN(mode=WLAN.STA)
 #
 # nets = wlan.scan()

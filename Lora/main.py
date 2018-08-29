@@ -17,11 +17,11 @@ s.setsockopt(socket.SOL_LORA, socket.SO_DR, 5)
 
 # make the socket blocking
 # (waits for the data to be sent and for the 2 receive windows to expire)
-s.setblocking(True)
+# s.setblocking(True)
 
 # make the socket non-blocking
 # (because if there's no data received it will block forever...)
-s.setblocking(False)
+# s.setblocking(False)
 
 # split timestamp
 timestamp = str(ertc.get_time()).replace('(',' ').replace(')',' ').replace(',',' ').split(" ")
@@ -29,6 +29,7 @@ timestamp = str(ertc.get_time()).replace('(',' ').replace(')',' ').replace(',','
 listtimestamp = timestamp
 timestamp = ''.join(listtimestamp)
 s.send(timestamp)
+print(timestamp)
 # byte_y=y.encode('utf-8').split(",")
 # print(byte_y)
 
