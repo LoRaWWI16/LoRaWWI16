@@ -2,9 +2,16 @@ import time, datetime
 import ttn
 import pymysql
 import bottle
-pymysql.install_as_MySQLdb()
-from bottle import route,run,template,static_file
-import bottle_mysql
+from bottle import route, template, run, debug, request, static_file, TEMPLATE_PATH
+
+import os
+
+bottle.TEMPLATE_PATH.insert(0, '/path/to/viwes/')
+
+# rest of script
+
+
+app = bottle.Bottle()
 
 app_id = "lorawwi16"
 access_key = "ttn-account-v2.fD4fuJqNXvmZ3h8QXc8ExxG-CQDtJWeBKiURmVecz-4"
@@ -13,19 +20,11 @@ Lora = pymysql.connect(host="localhost",  # your host, usually localhost
                        user="Lora",  # your username
                        passwd="JfEpK54GTzjVqHbT",  # your password JfEpK54GTzjVqHbT
                        db="Lora")  # name of the data base
-
-
-plugin = bottle_mysql.Plugin(dbuser = "Lora", dbpass = "JfEpK54GTzjVqHbT",dbname = "Lora")
-app = bottle.Bottle()
-app.install(plugin)
-
-
 # you must create a Cursor object. It will let
 #  you execute all the queries you need
 cursor = Lora.cursor()
 
-
-@app.route('/')
+@app.route('/test')
 def index():
     print(printdb())
     handler = ttn.HandlerClient(app_id, access_key)
@@ -88,6 +87,24 @@ def uplink_callback(msg, client):
   # Make sure data is committed to the database
   Lora.commit()
 
+import pprint
+
+class LoggingMiddleware:
+
+    def __init__(self, application):
+        self.__application = application
+
+    def __call__(self, environ, start_response):
+        errors = environ['wsgi.errors']
+        pprint.pprint(('REQUEST', environ), stream=errors)
+
+        def _start_response(status, headers, *args):
+            pprint.pprint(('RESPONSE', status, headers), stream=errors)
+            return start_response(status, headers, *args)
+
+        return self.__application(environ, _start_response)
+
+application = LoggingMiddleware(app)
 
 
 
