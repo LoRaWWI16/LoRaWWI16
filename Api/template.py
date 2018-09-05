@@ -10,11 +10,12 @@ app_id = "lorawwi16"
 access_key = "ttn-account-v2.fD4fuJqNXvmZ3h8QXc8ExxG-CQDtJWeBKiURmVecz-4"
 
 Lora = pymysql.connect(host="localhost",  # your host, usually localhost
-                       user="root",  # your username
-                       passwd="",  # your password JfEpK54GTzjVqHbT
+                       user="Lora",  # your username
+                       passwd="JfEpK54GTzjVqHbT",  # your password JfEpK54GTzjVqHbT
                        db="Lora")  # name of the data base
 
-plugin = bottle_mysql.Plugin(dbuser = "root", dbpass = "",dbname = "Lora")
+
+plugin = bottle_mysql.Plugin(dbuser = "Lora", dbpass = "JfEpK54GTzjVqHbT",dbname = "Lora")
 app = bottle.Bottle()
 app.install(plugin)
 
@@ -26,6 +27,19 @@ cursor = Lora.cursor()
 
 @app.route('/')
 def index():
+    print(printdb())
+    handler = ttn.HandlerClient(app_id, access_key)
+
+    # using mqtt client
+    mqtt_client = handler.data()
+    mqtt_client.set_uplink_callback(uplink_callback)
+
+    mqtt_client.connect()
+    time.sleep(60)
+    mqtt_client.close()
+    cursor.close()
+    Lora.close()
+
     row = printdb()
     last = row[-1]
     lastdate = last[0]
@@ -75,21 +89,6 @@ def uplink_callback(msg, client):
   Lora.commit()
 
 
-if __name__ == '__main__':
-    run(debug=True,reloader=True,app=app)
 
-    handler = ttn.HandlerClient(app_id, access_key)
-
-    # using mqtt client
-    mqtt_client = handler.data()
-    mqtt_client.set_uplink_callback(uplink_callback)
-
-
-
-    mqtt_client.connect()
-    time.sleep(60)
-    mqtt_client.close()
-    cursor.close()
-    Lora.close()
 
 

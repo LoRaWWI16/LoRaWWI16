@@ -1,27 +1,43 @@
 import time
 import ttn
-import MySQLdb
+import pymysql
+import bottle
+pymysql.install_as_MySQLdb()
+from bottle import route,run,template
+import bottle_mysql
 
 app_id = "lorawwi16"
 access_key = "ttn-account-v2.fD4fuJqNXvmZ3h8QXc8ExxG-CQDtJWeBKiURmVecz-4"
 
-db = MySQLdb.connect(host="localhost",  # your host, usually localhost
-                       user="Lora",  # your username
-                       passwd="JfEpK54GTzjVqHbT",  # your password
+Lora = pymysql.connect(host="localhost",  # your host, usually localhost
+                       user="root",  # your username
+                       passwd="",  # your password JfEpK54GTzjVqHbT
                        db="Lora")  # name of the data base
+
+plugin = bottle_mysql.Plugin(dbuser = "root", dbpass = "",dbname = "Lora")
+app = bottle.Bottle()
+app.install(plugin)
+
 
 # you must create a Cursor object. It will let
 #  you execute all the queries you need
-cursor = db.cursor()
+cursor = Lora.cursor()
+
+
+@app.route('/')
+def index():
+    #row = printdb()
+    #for resault in row:
+     #   print (resault[0])
+    #if row:
+        return template('index.tpl')
 
 def printdb():
-    
+
     cursor.execute("select * from Daten")
     result = cursor.fetchall()
 
-    for row in result:
-        print (row[0])
-
+    return result
 
 def uplink_callback(msg, client):
   print("Received uplink from ", msg.dev_id)
@@ -48,22 +64,24 @@ def uplink_callback(msg, client):
   emp_no = cursor.lastrowid
 
   # Make sure data is committed to the database
-  db.commit()
+  Lora.commit()
 
 
+if __name__ == '__main__':
+    run(app, host='localhost', port=8080)
+
+    handler = ttn.HandlerClient(app_id, access_key)
+
+    # using mqtt client
+    mqtt_client = handler.data()
+    mqtt_client.set_uplink_callback(uplink_callback)
 
 
+    printdb()
+    mqtt_client.connect()
+    time.sleep(60)
+    mqtt_client.close()
+    cursor.close()
+    Lora.close()
 
-handler = ttn.HandlerClient(app_id, access_key)
 
-# using mqtt client
-mqtt_client = handler.data()
-mqtt_client.set_uplink_callback(uplink_callback)
-
-
-printdb()
-mqtt_client.connect()
-time.sleep(60)
-mqtt_client.close()
-cursor.close()
-db.close()
