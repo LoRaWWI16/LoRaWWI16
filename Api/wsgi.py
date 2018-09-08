@@ -1,18 +1,12 @@
-import time, datetime
-import ttn
+import datetime
 import pymysql
 import bottle
-from bottle import template
-
-
+from bottle import route,template,static_file, BaseTemplate
+#import value as value
+#BaseTemplate.defaults['symbol_name'] = value
 import os
 
-os.chdir("/var/www/Lora/views")
-
-app = bottle.Bottle()
-
-app_id = "lorawwi16"
-access_key = "ttn-account-v2.fD4fuJqNXvmZ3h8QXc8ExxG-CQDtJWeBKiURmVecz-4"
+os.chdir("/var/www/Lora")
 
 Lora = pymysql.connect(host="localhost",  # your host, usually localhost
                        user="Lora",  # your username
@@ -20,14 +14,16 @@ Lora = pymysql.connect(host="localhost",  # your host, usually localhost
                        db="Lora")  # name of the data base
 
 
+app = bottle.default_app()
+BaseTemplate.defaults['get_url'] = app.get_url
 
-
-
-
+# Static Routes
+@route('static/<filename:path>', name='static')
+def server_static(filename):
+    return static_file(filename, root='static')
 
 @app.route('/')
 def index():
-
     row = printdb()
     last = row[-1]
     lastdate = last[0]
@@ -35,12 +31,12 @@ def index():
     first = row[0]
     now = datetime.datetime.now()
     dur = int((now - lastdate).total_seconds())
-    if dur > 28800:
-        test = True
-    else:
-        test = False
+    hours = int(dur/3600)
+    days = int(hours/24)
+    chart = server_static('chart.png')
     if row:
-        return template('index.tpl',row=row, last=last, count=count, first=first, test=test)
+        return template('index.tpl',row=row, last=last, count=count, first=first, dur=dur, hours=hours, days=days, chart=chart)
+
 
 def printdb():
 
