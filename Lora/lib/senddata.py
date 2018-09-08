@@ -34,7 +34,7 @@ class Data:
 
         return timestamp
 
-    def sendoutputbasket():
+    def sendoutputbasket(port):
         timestamp = get_timestamp()
         # make the socket blocking
         # (waits for the data to be sent and for the 2 receive windows to expire)
@@ -43,7 +43,24 @@ class Data:
         ######################
         #  Data
         #######################
-        s.bind(1)
+        s.bind(port)
+        s.send(timestamp)
+        time.sleep(5)
+
+        # make the socket non-blocking
+        # (because if there's no data received it will block forever...)
+        s.setblocking(False)
+
+    def sendcase(port):
+        timestamp = get_timestamp()
+        # make the socket blocking
+        # (waits for the data to be sent and for the 2 receive windows to expire)
+        s.setblocking(True)
+
+        ######################
+        #  Data
+        #######################
+        s.bind(port)
         s.send(timestamp)
         time.sleep(5)
 
@@ -60,13 +77,30 @@ class Data:
         ######################
         #  Data
         #######################
-        s.bind(2)
+        s.bind(5)
         s.send(timestamp)
         time.sleep(5)
 
         # make the socket non-blocking
         # (because if there's no data received it will block forever...)
         # s.setblocking(False)
+
+    def sendled():
+        timestamp = get_timestamp()
+        # make the socket blocking
+        # (waits for the data to be sent and for the 2 receive windows to expire)
+        s.setblocking(True)
+
+        ######################
+        #  Data
+        #######################
+        s.bind(6)
+        s.send(timestamp)
+        time.sleep(5)
+
+        # make the socket non-blocking
+        # (because if there's no data received it will block forever...)
+        s.setblocking(False)
 
     def sendpresencebutton():
         timestamp = get_timestamp()
@@ -77,43 +111,10 @@ class Data:
         ######################
         #  Data
         #######################
-        s.bind(3)
+        s.bind(7)
         s.send(timestamp)
         time.sleep(5)
-
-        # make the socket non-blocking
-        # (because if there's no data received it will block forever...)
-        s.setblocking(False)
-
-    def sendlightsensor():
-        timestamp = get_timestamp()
-        # make the socket blocking
-        # (waits for the data to be sent and for the 2 receive windows to expire)
-        s.setblocking(True)
-
-        ######################
-        #  Data
-        #######################
-        s.bind(4)
-        s.send(timestamp)
-        time.sleep(5)
-
-        # make the socket non-blocking
-        # (because if there's no data received it will block forever...)
-        s.setblocking(False)
-
-    def sendcase():
-        timestamp = get_timestamp()
-        # make the socket blocking
-        # (waits for the data to be sent and for the 2 receive windows to expire)
-        s.setblocking(True)
-
-        ######################
-        #  Data
-        #######################
-        s.bind(5)
-        s.send(timestamp)
-        time.sleep(5)
+        return timestamp
 
         # make the socket non-blocking
         # (because if there's no data received it will block forever...)
