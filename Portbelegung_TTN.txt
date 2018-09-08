@@ -1,0 +1,7 @@
+port 1: outputbasketopen
+port 2: outputbasketclosed
+port 3: caseopen
+port 4: caseclosed
+port 5: buzzer
+port 6: led
+port 7: presencebutton
