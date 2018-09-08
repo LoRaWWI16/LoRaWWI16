@@ -1,3 +1,0 @@
-FUCK OFF
-
-        {{test}}

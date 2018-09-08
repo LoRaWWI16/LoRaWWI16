@@ -6,8 +6,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <link type="text/css" rel="stylesheet" href="static/css/style.css">
-        <link href="static/img/chart.png">
+        <link type="text/css" rel="stylesheet" href="../static/css/style.css">
+        <link href="../static/chart.png">
     </head>
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
@@ -90,7 +90,7 @@
             </div>
             <div class="col-sm-4">
                 <h2>Kuchendiagramm</h2>
-                <img src="" alt="Kuchendiagramm">
+                <img src=" {{get_url('static', filename ='chart.png')}}">
             </div>
         </div>
     </body>
