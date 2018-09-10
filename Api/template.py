@@ -22,15 +22,20 @@ def uplink_callback(msg, client):
                "VALUES (%s, %s)")
 
   if(msg.port == 1):
-    data_msg = ('outputbasket', msg.payload_fields.outputbasket)
+    data_msg = ('outputbasket', msg.payload_fields.outputbasketopen)
   if (msg.port == 2):
-    data_msg = ('buzzer', msg.payload_fields.buzzer)
+    data_msg = ('buzzer', msg.payload_fields.outputbasketclosed)
   if (msg.port == 3):
-    data_msg = ('presencebutton', msg.payload_fields.presencebutton)
+    data_msg = ('presencebutton', msg.payload_fields.caseopen)
   if (msg.port == 4):
-    data_msg = ('lightsensor', msg.payload_fields.lightsensor)
+    data_msg = ('lightsensor', msg.payload_fields.caseclosed)
   if (msg.port == 5):
-    data_msg = ('case', msg.payload_fields.case)
+    data_msg = ('case', msg.payload_fields.buzzer)
+  if (msg.port == 6):
+    data_msg = ('case', msg.payload_fields.led)
+  if (msg.port == 7):
+    data_msg = ('case', msg.payload_fields.presencebutton)
+
 
 
   # Insert new Data
