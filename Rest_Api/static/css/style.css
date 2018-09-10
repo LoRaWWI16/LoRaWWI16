@@ -32,14 +32,14 @@
 
     /* Set h4 Dashboard Numbers */
     h4 {
-        font-size: large;
-        color: aquamarine;
+        font-size: 24em;
+        color: darkslategrey;
         text-align: center;
     }
 
     /*Set h3 Dashboard Description */
     h3 {
-        font-size: medium;
+        font-size: xx-large;
         color: navy;
         text-align: left;
     }
