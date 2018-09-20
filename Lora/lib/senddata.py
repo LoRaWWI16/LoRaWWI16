@@ -39,6 +39,7 @@ class Data:
         # make the socket blocking
         # (waits for the data to be sent and for the 2 receive windows to expire)
         s.setblocking(True)
+        Colour.blink_green()
 
         ######################
         #  Data
@@ -56,7 +57,7 @@ class Data:
         # make the socket blocking
         # (waits for the data to be sent and for the 2 receive windows to expire)
         s.setblocking(True)
-
+        Colour.blink_green()
         ######################
         #  Data
         #######################
@@ -72,8 +73,8 @@ class Data:
         timestamp = get_timestamp()
         # make the socket blocking
         # (waits for the data to be sent and for the 2 receive windows to expire)
-        # s.setblocking(True)
-
+        s.setblocking(True)
+        Colour.blink_green()
         ######################
         #  Data
         #######################
@@ -83,14 +84,14 @@ class Data:
 
         # make the socket non-blocking
         # (because if there's no data received it will block forever...)
-        # s.setblocking(False)
+        s.setblocking(False)
 
     def sendled():
         timestamp = get_timestamp()
         # make the socket blocking
         # (waits for the data to be sent and for the 2 receive windows to expire)
         s.setblocking(True)
-
+        Colour.blink_green()
         ######################
         #  Data
         #######################
@@ -107,7 +108,7 @@ class Data:
         # make the socket blocking
         # (waits for the data to be sent and for the 2 receive windows to expire)
         s.setblocking(True)
-
+        Colour.blink_green()
         ######################
         #  Data
         #######################
