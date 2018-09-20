@@ -1,11 +1,5 @@
-from machine import RTC
 import time
-import socket
-from ds3231 import DS3231
-from colour import Colour
-import pycom
 from machine import Timer, Pin, PWM
-from pindef import Pins
 from senddata import Data
 
 p4 = Pin('P4', mode=Pin.IN, pull=Pin.PULL_UP) # rot: Lichtschranke
